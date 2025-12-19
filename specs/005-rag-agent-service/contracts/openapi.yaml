@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: RAG Agent API
+  version: 1.0.0
+paths:
+  /api/chat/message:
+    post:
+      summary: Send a message to the RAG Agent
+      operationId: chatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                session_id:
+                  type: string
+                  format: uuid
+                  nullable: true
+                selected_text:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                  session_id:
+                    type: string
+                    format: uuid
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                        title:
+                          type: string
+                        similarity:
+                          type: number

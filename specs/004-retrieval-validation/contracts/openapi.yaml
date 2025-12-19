@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: Retrieval Validation API
+  version: 1.0.0
+paths:
+  /api/query/validate:
+    post:
+      summary: Validate content retrieval
+      description: Execute a semantic search to verify ingestion quality and RAG retrieval.
+      operationId: validateRetrieval
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query_text:
+                  type: string
+                  example: "What is a humanoid robot?"
+                top_k:
+                  type: integer
+                  default: 5
+                  example: 3
+                score_threshold:
+                  type: number
+                  format: float
+                  default: 0.0
+                  example: 0.7
+              required:
+                - query_text
+      responses:
+        '200':
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  total_found:
+                    type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chunk_text:
+                          type: string
+                        similarity_score:
+                          type: number
+                          format: float
+                        source_url:
+                          type: string
+                        page_title:
+                          type: string
+                        section_header:
+                          type: string
+                          nullable: true
+        '500':
+          description: Internal Server Error (Vector DB or Embedding model failure)

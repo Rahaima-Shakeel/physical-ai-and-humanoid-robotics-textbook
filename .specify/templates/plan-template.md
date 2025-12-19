@@ -31,12 +31,13 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [ ] **Spec-Driven Content**: Is all content derived from a specification?
-- [ ] **Docusaurus Compatibility**: Is the content compatible with Docusaurus rendering?
-- [ ] **Automated Content Generation**: Is content generation automated where possible?
-- [ ] **Versioning and History**: Are all changes tracked in version control?
-- [ ] **Readability and Accessibility**: Is the content readable and accessible?
-- [ ] **Contribution Guidelines**: Do the changes adhere to the contribution guidelines?
+- [ ] **Simplicity First**: Prefer straightforward solutions over complex architectures?
+- [ ] **User Experience Excellence**: Does every feature enhance the user journey?
+- [ ] **Performance by Default**: Does it meet sub-second response times?
+- [ ] **Maintainability**: Is the code easy for future developers to understand?
+- [ ] **Security & Privacy**: Is user data protection ensured?
+- [ ] **Incremental Delivery**: Are we shipping working features progressively?
+- [ ] **Agent Autonomy**: Can AI agents autonomously modify and commit this?
 
 ## Project Structure
 

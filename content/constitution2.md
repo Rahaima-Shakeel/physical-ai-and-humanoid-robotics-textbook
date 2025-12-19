@@ -513,7 +513,7 @@ GET /api/user/profile
 
 ### Agent Coordination
 - Use Antigravity Agent Manager for multi-agent workflows
-- Define clear boundaries: Ingest ↔query ↔ Frontend ↔ DevOps
+- Define clear boundaries: Ingest ↔ Query ↔ Frontend ↔ DevOps
 - Share context via structured outputs (JSON schemas)
 - **Agent Autonomy**: Agents can autonomously modify code/docs
 - **Commit Authority**: Agents can commit changes directly to feature branches

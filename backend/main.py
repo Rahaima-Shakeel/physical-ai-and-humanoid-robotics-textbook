@@ -20,8 +20,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", # Always allow localhost for dev
-        "http://localhost:3001", # Allow auth service if needed (though backend calls auth, frontend calls both)
-        "https://physical-ai-and-humanoid-robotics-t-tau.vercel.app", # Allow production frontend
+        "https://humanoid-robotic-auth.up.railway.app", # Allow auth service if needed (though backend calls auth, frontend calls both)
+        "https://raha-humanoid-robotics.vercel.app", # Allow production frontend
     ],
     allow_credentials=True,
     allow_methods=["*"],

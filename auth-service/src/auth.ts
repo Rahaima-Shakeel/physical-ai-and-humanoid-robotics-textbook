@@ -10,7 +10,7 @@ const pool = new Pool({
 export const auth = betterAuth({
   database: pool,
   emailAndPassword: { enabled: true },
-  trustedOrigins: process.env.TRUSTED_ORIGINS ? process.env.TRUSTED_ORIGINS.split(',') : ["https://zain-humanoid-robotics.vercel.app"],
+  trustedOrigins: process.env.TRUSTED_ORIGINS ? process.env.TRUSTED_ORIGINS.split(',') : ["https://raha-humanoid-robotics.vercel.app"],
   advanced: {
       cookies: {
           session_token: {

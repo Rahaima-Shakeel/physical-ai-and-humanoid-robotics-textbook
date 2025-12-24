@@ -24,10 +24,8 @@ const config: Config = {
   },
 
   customFields: {
-    // Backend API URL - defaults to localhost for development
-    // Override with BACKEND_URL environment variable for production
-    backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
-    betterAuthUrl: process.env.BETTER_AUTH_URL || 'http://localhost:3001',
+    backendUrl: process.env.BACKEND_URL || 'https://robotics-textbook.up.railway.app',
+    betterAuthUrl: process.env.BETTER_AUTH_URL || 'https://humanoid-robotic-auth.up.railway.app',
   },
 
   presets: [

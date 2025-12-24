@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.user {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ifm-navbar-link-color);
+}
+
+.authButton {
+    background: var(--site-red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.authButton:hover {
+    background-color: #9A3B2F;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(179, 76, 61, 0.2);
+}
+
+.loading {
+    color: var(--ifm-navbar-link-color);
+    font-size: 0.8rem;
+}

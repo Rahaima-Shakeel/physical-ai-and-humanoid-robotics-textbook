@@ -1,28 +1,239 @@
-/**
- * Any CSS you add here will be applied to all pages of your Docusaurus site.
- */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #800000; /* Maroon */
-  --ifm-color-primary-dark: #660000;
-  --ifm-color-primary-darker: #4d0000;
-  --ifm-color-primary-darkest: #330000;
-  --ifm-color-primary-light: #993333;
-  --ifm-color-primary-lighter: #b36666;
-  --ifm-color-primary-lightest: #cc9999;
-  --ifm-code-font-size: 95%;
+  /* User-Defined Palette mapping */
+  --site-tan: #EAD9C3;
+  /* Primary site background */
+  --site-cream: #FAF3E3;
+  /* Secondary sections / Cards / Hero overlays */
+  --site-orange: #D9822B;
+  /* Key accents / Hover highlights / Links */
+  --site-olive: #A7B67E;
+  /* Info boxes / Secondary buttons */
+  --site-red: #B34C3D;
+  /* Primary CTA buttons / Quotes */
+  --site-brown: #3A2F2F;
+  /* Headings / Main body text */
+  --site-gray: #6B5E55;
+  /* Secondary text / Borders / Shadows */
+
+  /* Infima Variable Overrides */
+  --ifm-color-primary: var(--site-orange);
+  --ifm-color-primary-dark: #C17326;
+  --ifm-color-primary-darker: #A96421;
+  --ifm-color-primary-darkest: #91551C;
+  --ifm-color-primary-light: #E09549;
+  --ifm-color-primary-lighter: #E7A867;
+  --ifm-color-primary-lightest: #EEBB85;
+
+  --ifm-background-color: var(--site-tan);
+  --ifm-background-surface-color: var(--site-cream);
+  --ifm-footer-background-color: var(--site-brown);
+  --ifm-font-color-base: var(--site-brown);
+  --ifm-heading-color: var(--site-brown);
+
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+  --ifm-heading-font-family: 'Merriweather', serif;
+
+  --ifm-card-background-color: var(--site-cream);
+  --ifm-card-border-radius: 20px;
+  --ifm-button-border-radius: 12px;
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability in dark mode */
 html[data-theme='dark'] {
-  --ifm-color-primary: #800000; /* Maroon */
-  --ifm-color-primary-dark: #993333;
-  --ifm-color-primary-darker: #b36666;
-  --ifm-color-primary-darkest: #cc9999;
-  --ifm-color-primary-light: #660000;
-  --ifm-color-primary-lighter: #4d0000;
-  --ifm-color-primary-lightest: #330000;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: var(--ifm-color-primary-lightest);
+  --ifm-background-color: #2D2424;
+  --ifm-font-color-base: var(--site-tan);
+  --ifm-heading-color: #fff;
+  --ifm-card-background-color: var(--site-brown);
+}
+
+body {
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 700;
+  color: var(--site-brown);
+}
+
+.hero {
+  background-color: var(--site-tan);
+  position: relative;
+  padding: 6rem 2rem;
+  border-bottom: 1px solid var(--site-gray);
+  z-index: 1;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--site-cream);
+  opacity: 0.4;
+  z-index: -1;
+}
+
+.hero__title {
+  color: var(--site-brown);
+}
+
+.hero__subtitle {
+  color: var(--site-gray);
+}
+
+.button--primary {
+  --ifm-button-background-color: var(--site-red);
+  --ifm-button-border-color: var(--site-red);
+  --ifm-button-color: #fff;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.button--primary:hover {
+  background-color: #9A3B2F;
+  /* Darker Burnt Red */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(179, 76, 61, 0.25);
+}
+
+.button--secondary {
+  --ifm-button-background-color: var(--site-olive);
+  --ifm-button-border-color: var(--site-olive);
+  --ifm-button-color: #fff;
+  font-weight: 600;
+}
+
+/* Rounded Cards & Hover Effects */
+.card {
+  border-radius: var(--ifm-card-border-radius);
+  border: 1px solid var(--site-gray);
+  box-shadow: 0 4px 12px var(--site-gray);
+  background-color: var(--ifm-card-background-color);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px var(--site-gray);
+  border-color: var(--site-orange);
+}
+
+html[data-theme='dark'] .card {
+  background-color: #3A2F2F;
+  border-color: rgba(234, 217, 195, 0.1);
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2.5rem;
+  padding: 3rem 0;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+p {
+  color: var(--site-brown);
+}
+
+.text--secondary {
+  color: var(--site-gray) !important;
+}
+
+.admonition {
+  background-color: var(--site-olive);
+  color: var(--site-brown);
+  border: none;
+  border-radius: 12px;
+}
+
+/* Navbar Theme Alignment */
+.navbar {
+  background-color: var(--site-tan);
+  border-bottom: 1px solid rgba(107, 94, 85, 0.1);
+  box-shadow: 0 2px 10px rgba(58, 47, 47, 0.05);
+  padding: 0.75rem 2rem;
+}
+
+.navbar__title {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 700;
+  color: var(--site-brown);
+  font-size: 1.1rem;
+}
+
+.navbar__item {
+  font-weight: 600;
+  color: var(--site-brown);
+}
+
+.navbar__item:hover {
+  color: var(--site-orange);
+}
+
+/* Footer Theme Alignment */
+.footer {
+  background-color: var(--site-brown);
+  color: var(--site-tan);
+  padding: 4rem 2rem;
+  border-top: 1px solid var(--site-gray);
+}
+
+.footer__title {
+  color: var(--site-cream);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.footer__link-item {
+  color: var(--site-tan);
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.footer__link-item:hover {
+  color: var(--site-orange);
+  opacity: 1;
+  text-decoration: none;
+  transform: translateX(3px);
+  display: inline-block;
+}
+
+.footer__copyright {
+  color: var(--site-gray);
+  font-size: 0.85rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(234, 217, 195, 0.1);
+  padding-top: 2rem;
 }

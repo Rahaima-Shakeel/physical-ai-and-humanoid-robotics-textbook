@@ -9,55 +9,137 @@ export interface Message {
     sources?: Array<{ id: number | string; title: string; url: string; score?: number }>;
 }
 
-const STORAGE_KEY = 'chat_widget_messages';
+export interface ChatSession {
+    id: string;
+    title: string;
+    messages: Message[];
+    updatedAt: number;
+}
+
+const STORAGE_KEY = 'chat_widget_sessions';
+const CURRENT_SESSION_ID_KEY = 'chat_widget_current_session_id';
+const IS_OPEN_KEY = 'chat_widget_is_open';
 
 export const useChat = () => {
     const { siteConfig } = useDocusaurusContext();
-    const backendUrl = (siteConfig.customFields?.backendUrl as string) || 'robotics-textbook.up.railway.app';
+    const backendUrl = (siteConfig.customFields?.backendUrl as string);
 
     const [isOpen, setIsOpen] = useState(() => {
         if (typeof window !== 'undefined') {
-            const saved = sessionStorage.getItem('chat_widget_is_open');
+            const saved = sessionStorage.getItem(IS_OPEN_KEY);
             return saved ? JSON.parse(saved) : false;
         }
         return false;
     });
 
-    const [messages, setMessages] = useState<Message[]>(() => {
-        // Load from session storage on init
+    const [sessions, setSessions] = useState<ChatSession[]>(() => {
         if (typeof window !== 'undefined') {
             const saved = sessionStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                return JSON.parse(saved);
-            }
+            if (saved) return JSON.parse(saved);
         }
-        return [
-            {
+        const initialSession: ChatSession = {
+            id: 'default-' + Date.now(),
+            title: 'New Chat',
+            messages: [{
                 id: 'welcome',
-                content: 'Hi! I can help you answer questions about the Physical AI and Humanoid Robotics textbook. What would you like to know?',
+                content: '👋 Hi! I\'m your Book Assistant. I can help you answer questions about the textbook. What would you like to explore today? 🤖',
                 sender: 'system',
                 timestamp: Date.now(),
-            },
-        ];
+            }],
+            updatedAt: Date.now(),
+        };
+        return [initialSession];
     });
+
+    const [currentSessionId, setCurrentSessionId] = useState<string>(() => {
+        if (typeof window !== 'undefined') {
+            const saved = sessionStorage.getItem(CURRENT_SESSION_ID_KEY);
+            return saved || '';
+        }
+        return '';
+    });
+
+    // Sync current session ID if missing
+    useEffect(() => {
+        if (!currentSessionId && sessions.length > 0) {
+            setCurrentSessionId(sessions[0].id);
+        }
+    }, [currentSessionId, sessions]);
+
+    const currentSession = sessions.find(s => s.id === currentSessionId) || sessions[0];
+    const messages = currentSession?.messages || [];
+
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     // Persistence effect
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+            sessionStorage.setItem(CURRENT_SESSION_ID_KEY, currentSessionId);
+            sessionStorage.setItem(IS_OPEN_KEY, JSON.stringify(isOpen));
         }
-    }, [messages]);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            sessionStorage.setItem('chat_widget_is_open', JSON.stringify(isOpen));
-        }
-    }, [isOpen]);
+    }, [sessions, currentSessionId, isOpen]);
 
     const toggleChat = useCallback(() => {
         setIsOpen((prev) => !prev);
     }, []);
+
+    const createNewSession = useCallback(() => {
+        const newId = 'session-' + Date.now();
+        const newSession: ChatSession = {
+            id: newId,
+            title: 'New Chat',
+            messages: [{
+                id: 'welcome-' + Date.now(),
+                content: '👋 Hi! Starting a new conversation. How can I help you? ✨',
+                sender: 'system',
+                timestamp: Date.now(),
+            }],
+            updatedAt: Date.now(),
+        };
+        setSessions(prev => [newSession, ...prev]);
+        setCurrentSessionId(newId);
+        setIsError(false);
+    }, []);
+
+    const deleteSession = useCallback((id: string) => {
+        setSessions(prev => {
+            const filtered = prev.filter(s => s.id !== id);
+            if (filtered.length === 0) {
+                const initial: ChatSession = {
+                    id: 'default-' + Date.now(),
+                    title: 'New Chat',
+                    messages: [{
+                        id: 'welcome-' + Date.now(),
+                        content: '👋 Hi! I\'m your Book Assistant. Ready for a fresh start! 🤖',
+                        sender: 'system',
+                        timestamp: Date.now(),
+                    }],
+                    updatedAt: Date.now(),
+                };
+                return [initial];
+            }
+            return filtered;
+        });
+        if (currentSessionId === id) {
+            setCurrentSessionId(''); // Will be reset by useEffect
+        }
+    }, [currentSessionId]);
+
+    const clearChat = useCallback(() => {
+        setSessions(prev => prev.map(s => s.id === currentSessionId ? {
+            ...s,
+            messages: [{
+                id: 'welcome-' + Date.now(),
+                content: '👋 Chat cleared. How else can I help you? ✨',
+                sender: 'system',
+                timestamp: Date.now(),
+            }],
+            updatedAt: Date.now(),
+        } : s));
+        setIsError(false);
+    }, [currentSessionId]);
 
     const sendMessage = useCallback(async (content: string) => {
         // Add user message
@@ -67,19 +149,31 @@ export const useChat = () => {
             sender: 'user',
             timestamp: Date.now(),
         };
-        setMessages((prev) => [...prev, userMsg]);
+
+        setSessions(prev => prev.map(s => s.id === currentSessionId ? {
+            ...s,
+            messages: [...s.messages, userMsg],
+            title: s.messages.length === 1 ? content.slice(0, 30) + (content.length > 30 ? '...' : '') : s.title,
+            updatedAt: Date.now(),
+        } : s));
+
         setIsLoading(true);
+        setIsError(false);
 
         try {
             // Use backend URL from Docusaurus config (supports environment override)
-            const API_URL = `${backendUrl}/api/chat/message`;
+    const API_URL = `${backendUrl}/api/chat/message`;
 
             const response = await fetch(API_URL, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: content }),
+                body: JSON.stringify({
+                    message: content,
+                    session_id: currentSessionId
+                }),
             });
 
             if (!response.ok) {
@@ -140,27 +234,34 @@ export const useChat = () => {
                     }
                 }
 
-                setMessages((prev) => {
-                    const lastMsg = prev[prev.length - 1];
+                setSessions(prev => prev.map(s => {
+                    if (s.id !== currentSessionId) return s;
+
+                    const lastMsg = s.messages[s.messages.length - 1];
                     if (!systemMsgAdded) {
                         systemMsgAdded = true;
-                        return [...prev, {
-                            id: systemMsgId,
-                            content: accumulatedContent,
-                            sender: 'system',
-                            timestamp: Date.now()
-                        }];
+                        return {
+                            ...s,
+                            messages: [...s.messages, {
+                                id: systemMsgId,
+                                content: accumulatedContent,
+                                sender: 'system',
+                                timestamp: Date.now()
+                            }],
+                            updatedAt: Date.now()
+                        };
                     }
 
-                    return prev.map(msg =>
-                        msg.id === systemMsgId
-                            ? {
-                                ...msg,
-                                content: accumulatedContent,
-                            }
-                            : msg
-                    );
-                });
+                    return {
+                        ...s,
+                        messages: s.messages.map(msg =>
+                            msg.id === systemMsgId
+                                ? { ...msg, content: accumulatedContent }
+                                : msg
+                        ),
+                        updatedAt: Date.now()
+                    };
+                }));
             }
         } catch (error) {
             console.error('Chat Error:', error);
@@ -170,16 +271,28 @@ export const useChat = () => {
                 sender: 'system',
                 timestamp: Date.now(),
             };
-            setMessages((prev) => [...prev, errorMsg]);
+            setSessions(prev => prev.map(s => s.id === currentSessionId ? {
+                ...s,
+                messages: [...s.messages, errorMsg],
+                updatedAt: Date.now()
+            } : s));
+            setIsError(true);
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [currentSessionId, backendUrl]);
 
     return {
         messages,
+        sessions,
+        currentSessionId,
         isLoading,
+        isError,
         sendMessage,
+        clearChat,
+        createNewSession,
+        deleteSession,
+        setCurrentSessionId,
         isOpen,
         toggleChat,
     };

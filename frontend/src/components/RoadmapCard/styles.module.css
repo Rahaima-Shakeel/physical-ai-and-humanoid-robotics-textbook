@@ -1,0 +1,74 @@
+.roadmapCard {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    text-decoration: none !important;
+}
+
+.cardLink {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.cardHeader {
+    padding: 1.5rem 1.5rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.iconContainer {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.cardTitle {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--site-text-color);
+}
+
+.cardBody {
+    padding: 0 1.5rem 1rem;
+    flex-grow: 1;
+}
+
+.cardDescription {
+    font-size: 0.95rem;
+    color: var(--site-text-secondary);
+    margin: 0;
+}
+
+.cardFooter {
+    padding: 0 1.5rem 1.5rem;
+}
+
+.learnMore {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ifm-color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.roadmapCard:hover .learnMore {
+    opacity: 1;
+}

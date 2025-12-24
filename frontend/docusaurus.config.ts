@@ -27,6 +27,7 @@ const config: Config = {
     // Backend API URL - defaults to localhost for development
     // Override with BACKEND_URL environment variable for production
     backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
+    betterAuthUrl: process.env.BETTER_AUTH_URL || 'http://localhost:3001',
   },
 
   presets: [
@@ -54,7 +55,8 @@ const config: Config = {
     navbar: {
       title: 'Physical AI and Humanoid Robotics',
       logo: {
-        src: 'img/logo.svg',
+        alt: 'Book Assistant Logo',
+        src: 'img/book-assistant-logo.svg',
       },
       items: [
         {
@@ -64,6 +66,10 @@ const config: Config = {
           label: 'Docs',
         },
         { to: '/blog', label: 'Updates', position: 'left' },
+        {
+          type: 'custom-auth',
+          position: 'right',
+        },
         {
           href: 'https://github.com/rahaima-shakeel/Physical-AI-and-Humanoid-Robotics-textbook',
           label: 'GitHub',
@@ -94,7 +100,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI and Humanoid Robotics, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI and Humanoid Robotics. By Rahaima Shakeel. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

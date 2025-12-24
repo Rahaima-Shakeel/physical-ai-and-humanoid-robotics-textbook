@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+.docusaurus/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.min.js
+*.py

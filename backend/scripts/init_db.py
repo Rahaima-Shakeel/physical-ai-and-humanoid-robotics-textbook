@@ -9,23 +9,30 @@ async def init_db():
         await Database.connect()
         print("Creating table `content_pages` if not exists...")
 
+        # Better-Auth Tables (Should be managed by Better-Auth migrate, but adding for completeness/reference)
+        # Note: Better-Auth usually creates its own tables. We focus on the extension tables.
+        
+        print("Creating table `user_profiles` if not exists...")
         await Database.execute("""
-            CREATE TABLE IF NOT EXISTS content_pages (
+            CREATE TABLE IF NOT EXISTS user_profiles (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                url VARCHAR(2048) UNIQUE NOT NULL,
-                title VARCHAR(512) NOT NULL,
-                content_hash CHAR(64) NOT NULL,
-                last_ingested_at TIMESTAMPTZ DEFAULT NOW(),
-                word_count INTEGER DEFAULT 0
+                userId TEXT UNIQUE NOT NULL,
+                software_background JSONB,
+                hardware_background JSONB,
+                updatedAt TIMESTAMPTZ DEFAULT NOW()
             );
         """)
 
+        print("Creating table `chat_messages` if not exists...")
         await Database.execute("""
-            CREATE INDEX IF NOT EXISTS idx_content_pages_url ON content_pages(url);
-        """)
-
-        await Database.execute("""
-            CREATE INDEX IF NOT EXISTS idx_content_pages_hash ON content_pages(content_hash);
+            CREATE TABLE IF NOT EXISTS chat_messages (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                userId TEXT,
+                sessionId TEXT NOT NULL,
+                role VARCHAR(20) NOT NULL,
+                content TEXT NOT NULL,
+                createdAt TIMESTAMPTZ DEFAULT NOW()
+            );
         """)
 
         print("Database initialized successfully.")

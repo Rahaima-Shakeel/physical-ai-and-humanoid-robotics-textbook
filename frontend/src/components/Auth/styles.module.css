@@ -1,0 +1,140 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: var(--site-cream);
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    border: 1px solid rgba(107, 94, 85, 0.2);
+    box-shadow: 0 20px 40px rgba(58, 47, 47, 0.15);
+    animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal h2 {
+    font-family: var(--ifm-heading-font-family);
+    color: var(--site-brown);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--ifm-color-emphasis-600);
+}
+
+.field {
+    margin-bottom: 1rem;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--site-brown);
+    font-size: 0.9rem;
+}
+
+.field input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--site-gray);
+    border-radius: 12px;
+    background: var(--site-tan);
+    color: var(--site-brown);
+    font-family: inherit;
+    transition: all 0.2s ease;
+    opacity: 0.9;
+}
+
+.field input:focus {
+    outline: none;
+    border-color: var(--site-orange);
+    background: white;
+    opacity: 1;
+    box-shadow: 0 0 0 4px rgba(217, 130, 43, 0.1);
+}
+
+.submit {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--site-red);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.submit:hover:not(:disabled) {
+    background-color: #9A3B2F;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(179, 76, 61, 0.25);
+}
+
+.submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.error {
+    color: var(--ifm-color-danger);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.toggle {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--site-gray);
+}
+
+.toggle button {
+    background: none;
+    border: none;
+    color: var(--site-red);
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    padding: 0;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.toggle button:hover {
+    color: var(--site-orange);
+}

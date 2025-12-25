@@ -16,13 +16,19 @@ app = FastAPI(title="Humanoid Robotics RAG API", version="0.1.0", lifespan=lifes
 
 from fastapi.middleware.cors import CORSMiddleware
 
+import os
+
+# Parse allowed origins from env, default to localhost
+default_origins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+]
+env_origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
+allow_origins = default_origins + [o.strip() for o in env_origins if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000", # Always allow localhost for dev
-        "https://humanoid-robotic-auth.up.railway.app", # Allow auth service if needed (though backend calls auth, frontend calls both)
-        "https://raha-humanoid-robotics.vercel.app", # Allow production frontend
-    ],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

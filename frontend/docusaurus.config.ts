@@ -8,7 +8,6 @@ const config: Config = {
 
   // Production URL
   url: 'https://physical-ai-and-humanoid-robotics-t-tau.vercel.app/',
-  // Base path for GitHub Pages (repository name)
   baseUrl: '/',
 
   // GitHub pages deployment config
@@ -24,8 +23,8 @@ const config: Config = {
   },
 
   customFields: {
-    backendUrl: process.env.BACKEND_URL || 'https://robotics-textbook.up.railway.app',
-    betterAuthUrl: process.env.BETTER_AUTH_URL || 'https://humanoid-robotic-auth.up.railway.app',
+    backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
+    betterAuthUrl: process.env.BETTER_AUTH_URL || 'http://localhost:3001',
   },
 
   presets: [
@@ -34,12 +33,9 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.ts'),
-          // editUrl can be added if you want "Edit this page" links
-          // editUrl: 'https://github.com/rahaima-shakeel/Physical-AI-and-Humanoid-Robotics-textbook/edit/main/website/',
         },
         blog: {
           showReadingTime: true,
-          // editUrl: 'https://github.com/rahaima-shakeel/Physical-AI-and-Humanoid-Robotics-textbook/edit/main/website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -75,6 +71,7 @@ const config: Config = {
         },
       ],
     },
+
     footer: {
       style: 'dark',
       links: [
@@ -85,21 +82,37 @@ const config: Config = {
         {
           title: 'Community',
           items: [
-            { label: 'Stack Overflow', href: 'https://stackoverflow.com/questions/tagged/docusaurus' },
-            { label: 'Discord', href: 'https://discordapp.com/invite/docusaurus' },
-            { label: 'Twitter', href: 'https://twitter.com/docusaurus' },
+            {
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+            },
+            {
+              label: 'Discord',
+              href: 'https://discordapp.com/invite/docusaurus',
+            },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/docusaurus',
+            },
           ],
         },
         {
           title: 'More',
           items: [
             { label: 'Blog', to: '/blog' },
-            { label: 'GitHub', href: 'https://github.com/rahaima-shakeel/Physical-AI-and-Humanoid-Robotics-textbook' },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/rahaima-shakeel/Physical-AI-and-Humanoid-Robotics-textbook',
+            },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI and Humanoid Robotics. By Rahaima Shakeel. Built with Docusaurus.`,
+
+      // ✅ FIXED HERE
+      copyright: `© ${new Date().getFullYear()} Physical AI and Humanoid Robotics.
+      By Rahaima Shakeel. Built with Docusaurus.`,
     },
+
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
